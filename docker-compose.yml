@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+    postgres:
+        container_name: postgres-dev
+        restart: on-failure
+        image: postgres:alpine3.17
+        ports:
+        - "5432:5432"
+        environment:
+          POSTGRES_PASSWORD: senhageleia
+          POSTGRES_USER: geleia
+          POSTGRES_DB: apivendas
+    
+    adminer:
+        restart: on-failure
+        image: adminer:4.8.0-standalone
+        ports:
+        - "8080:8080"
+        links:
+        - postgres:users    
