@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 
-export const ConnectionAppToDb = new DataSource({
+export const dataSourceApp = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
@@ -12,6 +12,7 @@ export const ConnectionAppToDb = new DataSource({
   migrations: ['./src/shared/database/migrations/*.ts'],
 });
 
-ConnectionAppToDb.initialize()
+dataSourceApp
+  .initialize()
   .then(() => console.log('Database Connected!!'))
   .catch(err => console.log(err));
