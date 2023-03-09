@@ -5,7 +5,7 @@ export const ConnectionAppToDb = new DataSource({
   host: 'localhost',
   port: 5432,
   username: 'geleia',
-  password: 'geleiasenha',
+  password: 'senhageleia',
   database: 'apivendas',
   synchronize: true,
   logging: true,
