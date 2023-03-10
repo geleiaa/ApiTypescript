@@ -9,6 +9,7 @@ export const dataSourceApp = new DataSource({
   database: 'apivendas',
   synchronize: true,
   logging: true,
+  entities: ['./src/modules/**/entities/Product.ts'],
   migrations: ['./src/shared/database/migrations/*.ts'],
 });
 

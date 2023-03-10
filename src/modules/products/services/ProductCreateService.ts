@@ -20,7 +20,7 @@ class ProductCreateService {
       name,
       price,
       quantity,
-    });
+    });  
 
     await ProdsRepository.save(product);
 
