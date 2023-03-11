@@ -1,4 +1,3 @@
-//import AppError from "@shared/errors/AppError";
 import Product from '../entities/Product';
 import { ProdsRepository } from '../repositories/ProductRepost';
 

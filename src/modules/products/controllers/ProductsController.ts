@@ -33,11 +33,7 @@ export class ProductsController {
 
     const createOne = new ProductCreateService();
 
-    const product = await createOne.execute({
-      name,
-      price,
-      quantity,
-    });
+    const product = await createOne.execute({ name, price, quantity, });
 
     return res.json({
       message: 'produto criado',
