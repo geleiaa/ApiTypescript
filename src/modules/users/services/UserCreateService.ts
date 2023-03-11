@@ -13,17 +13,17 @@ class UserCreateService {
   public async execute({ name, email, password }: IRequest): Promise<User> {
     const emailexists = await UsersRepository.findByEmail(email);
 
-    if(emailexists){
-        throw new AppError('Esse email ja está cadastrado!!');
+    if (emailexists) {
+      throw new AppError('Esse email ja está cadastrado!!');
     }
 
-    const hashedPass = await hash(password, 10); // hasheia 
+    const hashedPass = await hash(password, 10); // hasheia a senha
 
     const user = await UsersRepository.create({
-        name,
-        email,
-        password: hashedPass
-    })
+      name,
+      email,
+      password: hashedPass,
+    });
 
     await UsersRepository.save(user);
 

@@ -22,6 +22,7 @@ class User {
 
   @Column()
   avatar: string;
+  nullable: true;
 
   @CreateDateColumn()
   created_at: Date;

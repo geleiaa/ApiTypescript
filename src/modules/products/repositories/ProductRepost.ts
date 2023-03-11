@@ -1,3 +1,4 @@
+//import 'reflect-metadata';
 import { dataSourceApp } from '@shared/database';
 import Product from '../entities/Product';
 

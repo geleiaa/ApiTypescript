@@ -9,5 +9,7 @@ ormconfig.json
 dist
 package-lock.json
 
+notes.txt
+
 uploads/*
 !uploads/.gitkeep

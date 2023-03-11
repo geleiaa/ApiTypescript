@@ -24,7 +24,7 @@ export class CreateProducts1678303702054 implements MigrationInterface {
             scale: 2,
           },
           {
-            name: 'quatity',
+            name: 'quantity',
             type: 'int',
           },
           {
