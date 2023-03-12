@@ -1,5 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import User from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepost';
 
@@ -8,12 +9,13 @@ interface IRequest {
   password: string;
 }
 
-// interface IResponse {
-//     user: User;
-// }
+interface IResponse {
+    user: User;
+    token: string;
+}
 
 class SessionCreateService {
-  public async execute({ email, password }: IRequest): Promise<User> {
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await UsersRepository.findByEmail(email);
 
     if (!user) {
@@ -26,9 +28,15 @@ class SessionCreateService {
       throw new AppError('Email ou Senha incorreto!!!', 401);
     }
 
-    await UsersRepository.save(user);
+    const token = sign({ id: user.id }, 'secret', {
+      // subject: user.id,
+      expiresIn: '1d'
+    })
 
-    return user;
+    return {
+      user,
+      token
+    }
   }
 }
 

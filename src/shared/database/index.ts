@@ -1,5 +1,3 @@
-import Product from '@modules/products/entities/Product';
-import User from '@modules/users/entities/User';
 import { DataSource } from 'typeorm';
 
 export const dataSourceApp = new DataSource({
@@ -9,13 +7,12 @@ export const dataSourceApp = new DataSource({
   username: 'geleia',
   password: 'senhageleia',
   database: 'apivendas',
-  synchronize: true,
+  //synchronize: true,
   logging: true,
   entities: [
-    Product, User
-    // './src/modules/products/entities/Product.ts',
-    // './src/modules/users/entities/User.ts'
-],
+    './src/modules/users/entities/User.ts',
+    './src/modules/products/entities/Product.ts',
+  ],
   migrations: ['./src/shared/database/migrations/*.ts'],
 });
 

@@ -1,4 +1,3 @@
-//import 'reflect-metadata';
 import { dataSourceApp } from '@shared/database';
 import User from '../entities/User';
 
