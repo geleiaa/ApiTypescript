@@ -6,7 +6,7 @@ export const UsersRepository = dataSourceApp.getRepository(User).extend({
     const user = await this.findOne({
       where: {
         name,
-      }
+      },
     });
 
     return user;
@@ -15,7 +15,8 @@ export const UsersRepository = dataSourceApp.getRepository(User).extend({
   async findById(id: string): Promise<User | null> {
     const user = await this.findOne({
       where: {
-        id}
+        id,
+      },
     });
 
     return user;
@@ -25,7 +26,7 @@ export const UsersRepository = dataSourceApp.getRepository(User).extend({
     const user = await this.findOne({
       where: {
         email,
-      }
+      },
     });
 
     return user;

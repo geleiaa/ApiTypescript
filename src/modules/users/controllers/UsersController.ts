@@ -6,6 +6,8 @@ export class UserController {
   public async list(req: Request, res: Response): Promise<Response> {
     const listUsers = new UserListService();
 
+    console.log('REQUEST USER CONTRLL', req.user);
+
     const users = await listUsers.execute();
 
     return res.json({

@@ -3,6 +3,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import User from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepost';
+import authConf from '@config/auth';
 
 interface IRequest {
   email: string;
@@ -10,8 +11,8 @@ interface IRequest {
 }
 
 interface IResponse {
-    user: User;
-    token: string;
+  user: User;
+  token: string;
 }
 
 class SessionCreateService {
@@ -28,15 +29,15 @@ class SessionCreateService {
       throw new AppError('Email ou Senha incorreto!!!', 401);
     }
 
-    const token = sign({ id: user.id }, 'secret', {
+    const token = sign({ id: user.id }, authConf.jwt.secret, {
       // subject: user.id,
-      expiresIn: '1d'
-    })
+      expiresIn: authConf.jwt.expiresIn,
+    });
 
     return {
       user,
-      token
-    }
+      token,
+    };
   }
 }
 
