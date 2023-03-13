@@ -6,12 +6,13 @@ import AppError from '@shared/errors/AppError';
 import '@shared/database';
 import routes from './routes';
 import { errors } from 'celebrate';
+import uploadConf from '@config/upload';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use('/files', express.static(uploadConf.directory));
 app.use(routes);
 
 app.use(errors()); // 'celebrate' validation errors

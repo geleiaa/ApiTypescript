@@ -19,7 +19,7 @@ class UserCreateService {
 
     const hashedPass = await hash(password, 10); // hasheia a senha
 
-    const user = await UsersRepository.create({
+    const user = UsersRepository.create({
       name,
       email,
       password: hashedPass,

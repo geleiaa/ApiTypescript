@@ -6,12 +6,10 @@ export class UserController {
   public async list(req: Request, res: Response): Promise<Response> {
     const listUsers = new UserListService();
 
-    console.log('REQUEST USER CONTRLL', req.user);
-
     const users = await listUsers.execute();
 
     return res.json({
-      data: users,
+      users: users,
     });
   }
 
@@ -20,11 +18,11 @@ export class UserController {
 
     const createOne = new UserCreateService();
 
-    const user = createOne.execute({ name, email, password });
+    const user = await createOne.execute({ name, email, password });
 
     return res.json({
       message: 'usuário criado!!',
-      data: user,
+      user: user,
     });
   }
 }

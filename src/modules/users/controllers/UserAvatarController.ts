@@ -10,6 +10,9 @@ export class UserAvatarController {
       avatarFile: req.file?.filename as string,
     });
 
-    return res.json(user);
+    return res.json({
+      message: 'avatar enviado!!',
+      user: user,
+    });
   }
 }
