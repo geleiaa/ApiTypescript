@@ -3,7 +3,7 @@ import authConf from '@config/auth';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
-interface TokenPayload {
+interface ITokenPayload {
   id: string;
   iat: number;
   exp: number;
@@ -25,7 +25,7 @@ export const isAuthenticated = (
   try {
     const verifyToken = verify(token, authConf.jwt.secret);
 
-    const { id } = verifyToken as TokenPayload;
+    const { id } = verifyToken as ITokenPayload;
 
     req.user = {
       id: id,
