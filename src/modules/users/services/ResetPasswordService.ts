@@ -9,11 +9,9 @@ interface IRequest {
   password: string;
 }
 
-class SendFogotPasswordEmailService {
+class ResetPasswordEmailService {
   public async execute({ token, password }: IRequest): Promise<void> {
     const userToken = await UsersTokenRepository.findByToken(token);
-
-    console.log('UserToken', userToken);
 
     if (!userToken) {
       throw new AppError('Token não encontrado!!!');
@@ -34,7 +32,9 @@ class SendFogotPasswordEmailService {
     }
 
     user.password = await hash(password, 8);
+
+    await UsersRepository.save(user);
   }
 }
 
-export default SendFogotPasswordEmailService;
+export default ResetPasswordEmailService;

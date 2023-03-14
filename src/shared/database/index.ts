@@ -11,6 +11,7 @@ export const dataSourceApp = new DataSource({
   logging: true,
   entities: [
     './src/modules/users/entities/User.ts',
+    './src/modules/users/entities/Token.ts',
     './src/modules/products/entities/Product.ts',
   ],
   migrations: ['./src/shared/database/migrations/*.ts'],

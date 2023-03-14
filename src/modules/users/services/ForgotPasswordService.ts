@@ -14,7 +14,7 @@ class SendFogotPasswordEmailService {
       throw new AppError('Usuário não existe!!!');
     }
 
-    const token = UsersTokenRepository.generate(user.id);
+    const token = await UsersTokenRepository.generate(user.id);
 
     console.log(token);
   }
