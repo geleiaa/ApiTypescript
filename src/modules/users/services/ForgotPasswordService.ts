@@ -1,7 +1,8 @@
 import AppError from '@shared/errors/AppError';
 import { UsersRepository } from '../repositories/UsersRepost';
 import { UsersTokenRepository } from '../repositories/UserTokensRepost';
-import { SendEtherealMail } from '@config/EtherealMail';
+import { SendEtherealMail } from '@config/mail/EtherealMail';
+import path from 'path';
 
 interface IRequest {
   email: string;
@@ -15,11 +16,26 @@ class SendFogotPasswordEmailService {
       throw new AppError('Usuário não existe!!!');
     }
 
-    const token = await UsersTokenRepository.generate(user.id);
+    const { token } = await UsersTokenRepository.generate(user.id);
+
+    const forgotTemplate = path.resolve(
+      __dirname,
+      '../../../config/mail/views/forgot_pass.hbs',
+    );
 
     await SendEtherealMail.sendMail({
-      to: email,
-      body: `Solicitação de redefinção de senha, <br /> cole este Token:${token?.token} no campo "token"`,
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: 'Recuperação de Senha da Api',
+      templateData: {
+        file: forgotTemplate,
+        variables: {
+          name: user.name,
+          token,
+        },
+      },
     });
   }
 }

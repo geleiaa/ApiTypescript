@@ -12,7 +12,7 @@ export const UsersTokenRepository = dataSourceApp.getRepository(Token).extend({
     return userToken;
   },
 
-  async generate(user_id: string): Promise<Token | null> {
+  async generate(user_id: string): Promise<Token> {
     const userToken = this.create({
       user_id,
     });
