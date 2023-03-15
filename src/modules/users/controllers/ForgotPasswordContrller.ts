@@ -11,8 +11,8 @@ export class ForgotPasswordController {
       email,
     });
 
-    console.log('Email Enviado');
-
-    return res.status(204);
+    return res.status(200).json({
+      messge: 'Email Enviado',
+    });
   }
 }
