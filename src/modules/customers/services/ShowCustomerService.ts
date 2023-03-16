@@ -1,4 +1,4 @@
-import Customer from '../entitites/Customer';
+import Customer from '../entities/Customer';
 import { CustomersRepository } from '../repositories/CustomersRepost';
 import AppError from '@shared/errors/AppError';
 

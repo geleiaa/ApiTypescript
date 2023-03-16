@@ -1,5 +1,5 @@
 import { dataSourceApp } from '@shared/database';
-import Customer from '../entitites/Customer';
+import Customer from '../entities/Customer';
 
 export const CustomersRepository = dataSourceApp
   .getRepository(Customer)

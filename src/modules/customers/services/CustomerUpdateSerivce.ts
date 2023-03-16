@@ -1,5 +1,5 @@
 import AppError from '@shared/errors/AppError';
-import Customer from '../entitites/Customer';
+import Customer from '../entities/Customer';
 import { CustomersRepository } from '../repositories/CustomersRepost';
 
 interface IRequest {
@@ -8,7 +8,7 @@ interface IRequest {
   email: string;
 }
 
-class UpdateCustomerService {
+class CustomerUpdateService {
   public async execute({ id, name, email }: IRequest): Promise<Customer> {
     const customer = await CustomersRepository.findById(id);
 
@@ -31,4 +31,4 @@ class UpdateCustomerService {
   }
 }
 
-export default UpdateCustomerService;
+export default CustomerUpdateService;

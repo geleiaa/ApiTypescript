@@ -13,6 +13,7 @@ export const dataSourceApp = new DataSource({
     './src/modules/users/entities/User.ts',
     './src/modules/users/entities/Token.ts',
     './src/modules/products/entities/Product.ts',
+    './src/modules/customers/entities/Customer.ts',
   ],
   migrations: ['./src/shared/database/migrations/*.ts'],
 });
