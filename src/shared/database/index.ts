@@ -14,6 +14,8 @@ export const dataSourceApp = new DataSource({
     './src/modules/users/entities/Token.ts',
     './src/modules/products/entities/Product.ts',
     './src/modules/customers/entities/Customer.ts',
+    './src/modules/orders/entities/Order.ts',
+    './src/modules/orders/entities/OrdersProducts.ts',
   ],
   migrations: ['./src/shared/database/migrations/*.ts'],
 });

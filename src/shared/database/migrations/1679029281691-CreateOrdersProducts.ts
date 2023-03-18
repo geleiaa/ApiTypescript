@@ -52,7 +52,7 @@ export class CreateOrdersProducts1679029281691 implements MigrationInterface {
           },
           {
             name: 'OrdersProductsProduct',
-            columnNames: ['products_id'],
+            columnNames: ['product_id'],
             referencedTableName: 'products',
             referencedColumnNames: ['id'],
             onDelete: 'SET NULL',
