@@ -1,4 +1,4 @@
-import Customer from '@modules/customers/entities/Customer';
+import User from '@modules/users/entities/User';
 import { dataSourceApp } from '@shared/database';
 import Order from '../entities/Order';
 
@@ -9,7 +9,7 @@ interface IProduct {
 }
 
 interface IRequest {
-  customer: Customer;
+  user: User;
   products: IProduct[];
 }
 
@@ -20,7 +20,7 @@ export const OrdersRepository = dataSourceApp.getRepository(Order).extend({
         id,
       },
       relations: {
-        customer: true,
+        user: true,
         order_products: true,
       },
     });
@@ -28,9 +28,9 @@ export const OrdersRepository = dataSourceApp.getRepository(Order).extend({
     return order;
   },
 
-  async createOrder({ customer, products }: IRequest): Promise<Order> {
+  async createOrder({ user, products }: IRequest): Promise<Order> {
     const order = this.create({
-      customer,
+      user,
       order_products: products,
     });
 

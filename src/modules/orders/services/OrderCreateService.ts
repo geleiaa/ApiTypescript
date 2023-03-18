@@ -32,7 +32,7 @@ class OrderCreateService {
 
     const checkInexistentProducts = products.filter(
       product => !existsProductsIds.includes(product.id),
-    );
+    ); // separa ids não encontrados em existsProductsIds
 
     if (checkInexistentProducts.length) {
       throw new AppError(
@@ -44,11 +44,11 @@ class OrderCreateService {
       product =>
         prodsExists.filter(p => p.id === product.id)[0].quantity <
         product.quantity,
-    ); // a - 93
+    ); // verifica se a quantidade comprada é maior q a quantidade do estoque
 
     if (quantityAvailable.length) {
       throw new AppError(
-        `A quantidade ${quantityAvailable[0].quantity} é maior do que a quantidade do produto ${quantityAvailable[0].id} disponivel .`,
+        `A quantidade ${quantityAvailable[0].quantity} é maior do que a quantidade disponivel do produto ${quantityAvailable[0].id} .`,
       );
     }
 
@@ -59,7 +59,7 @@ class OrderCreateService {
     })); // a - 94
 
     const order = await OrdersRepository.createOrder({
-      customer: userExists,
+      user: userExists,
       products: serializedProducts,
     });
 
