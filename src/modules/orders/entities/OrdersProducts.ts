@@ -1,4 +1,5 @@
 import Product from '@modules/products/entities/Product';
+import Order from './Order';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import Order from './Order';
 
 @Entity('orders_products')
 class OrdersProducts {
@@ -23,11 +23,11 @@ class OrdersProducts {
 
   @ManyToOne(() => Order, order => order.order_products)
   @JoinColumn({ name: 'order_id' })
-  order: Order; // muitas orders para um order_prod
+  order: Order; // many orders para um order_prod
 
   @ManyToOne(() => Product, product => product.order_products)
   @JoinColumn({ name: 'product_id' })
-  product: Product; // muitas orders para um prod
+  product: Product; // many orders para um prod
 
   @Column()
   order_id: string;

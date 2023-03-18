@@ -1,4 +1,5 @@
-import Customer from '@modules/customers/entities/Customer';
+import User from '@modules/users/entities/User';
+import OrdersProducts from './OrdersProducts';
 import {
   CreateDateColumn,
   Entity,
@@ -8,16 +9,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import OrdersProducts from './OrdersProducts';
 
 @Entity('orders')
 class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Customer)
-  @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  customer: User; // many orders para um user
 
   @OneToMany(() => OrdersProducts, order_products => order_products.order, {
     cascade: true,

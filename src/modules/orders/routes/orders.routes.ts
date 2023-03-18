@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import { OrdersController } from '../controllers/OrdersController';
 import { celebrate, Joi, Segments } from 'celebrate';
-//import { isAuthenticated } from '../../../shared/http/middlewares/isAuthenticated';
+import { isAuthenticated } from '../../../shared/http/middlewares/isAuthenticated';
 
 const orderRoutes = Router();
 const orderContoller = new OrdersController();
+
+orderRoutes.use(isAuthenticated);
 
 orderRoutes.get(
   '/:id',
@@ -20,7 +22,7 @@ orderRoutes.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      customer_id: Joi.string().uuid().required(),
+      user_id: Joi.string().uuid().required(),
       products: Joi.required(),
     },
   }),

@@ -8,8 +8,7 @@ coverage
 ormconfig.json
 dist
 package-lock.json
-
+startapi.sh
 notes.txt
-
 uploads/*
 !uploads/.gitkeep

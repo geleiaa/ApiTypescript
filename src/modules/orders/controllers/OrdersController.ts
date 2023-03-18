@@ -18,9 +18,9 @@ export class OrdersController {
   public async create(req: Request, res: Response): Promise<Response> {
     const createOrder = new OrderCreateService();
 
-    const { customer_id, products } = req.body;
+    const { user_id, products } = req.body;
 
-    const order = await createOrder.execute({ customer_id, products });
+    const order = await createOrder.execute({ user_id, products });
 
     return res.status(201).json({
       message: 'order criado!',

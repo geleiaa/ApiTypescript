@@ -1,8 +1,8 @@
 import Order from '../entities/Order';
 import { OrdersRepository } from '../repositories/OrdersRepost';
-import { CustomersRepository } from '@modules/customers/repositories/CustomersRepost';
 import { ProdsRepository } from '@modules/products/repositories/ProductRepost';
 import AppError from '@shared/errors/AppError';
+import { UsersRepository } from '@modules/users/repositories/UsersRepost';
 
 interface IProduct {
   id: string;
@@ -10,15 +10,15 @@ interface IProduct {
 }
 
 interface IRequest {
-  customer_id: string;
+  user_id: string;
   products: IProduct[];
 }
 
 class OrderCreateService {
-  public async execute({ customer_id, products }: IRequest): Promise<Order> {
-    const customerExists = await CustomersRepository.findById(customer_id);
+  public async execute({ user_id, products }: IRequest): Promise<Order> {
+    const userExists = await UsersRepository.findById(user_id);
 
-    if (!customerExists) {
+    if (!userExists) {
       throw new AppError('Esse Cliente não existe!!!');
     }
 
@@ -59,7 +59,7 @@ class OrderCreateService {
     })); // a - 94
 
     const order = await OrdersRepository.createOrder({
-      customer: customerExists,
+      customer: userExists,
       products: serializedProducts,
     });
 
