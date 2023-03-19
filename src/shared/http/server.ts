@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+//import 'dotenv/config';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
@@ -7,6 +8,7 @@ import '@shared/database';
 import routes from './routes';
 import { errors } from 'celebrate';
 import uploadConf from '@config/upload';
+//import { pagination } from 'typeorm-pagination';
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConf.directory));
 app.use(routes);
+
+//app.use(pagination);
 
 app.use(errors()); // 'celebrate' validation errors
 
@@ -33,7 +37,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-const port = 1234;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server started in port ${port}...`);
 });

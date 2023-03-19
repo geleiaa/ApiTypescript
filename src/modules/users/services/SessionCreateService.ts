@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { sign, Secret } from 'jsonwebtoken';
 import User from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepost';
 import authConf from '@config/auth';
@@ -29,7 +29,7 @@ class SessionCreateService {
       throw new AppError('Email ou Senha incorreto!!!', 401);
     }
 
-    const token = sign({ id: user.id }, authConf.jwt.secret, {
+    const token = sign({ id: user.id }, authConf.jwt.secret as Secret, {
       // subject: user.id,
       expiresIn: authConf.jwt.expiresIn,
     });
