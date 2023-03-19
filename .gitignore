@@ -7,6 +7,7 @@ temp/
 coverage
 ormconfig.json
 dist
+/src/modules/users/repositories/UserLoginRepost.ts
 package-lock.json
 startapi.sh
 notes.txt

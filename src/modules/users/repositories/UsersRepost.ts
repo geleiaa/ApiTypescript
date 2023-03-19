@@ -24,6 +24,7 @@ export const UsersRepository = dataSourceApp.getRepository(User).extend({
 
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.findOne({
+      select: ['id', 'name', 'email', 'password'],
       where: {
         email,
       },
