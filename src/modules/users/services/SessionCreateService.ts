@@ -29,8 +29,8 @@ class SessionCreateService {
       throw new AppError('Email ou Senha incorreto!!!', 401);
     }
 
+    // emite o jwt
     const token = sign({ id: user.id }, authConf.jwt.secret as Secret, {
-      // subject: user.id,
       expiresIn: authConf.jwt.expiresIn,
     });
 

@@ -4,3 +4,5 @@ export default {
     expiresIn: '1d',
   },
 };
+
+// jwt config

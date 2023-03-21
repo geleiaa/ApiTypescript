@@ -1,6 +1,7 @@
 import Redis, { RedisOptions } from 'ioredis';
 import 'dotenv/config';
 
+// Redis DB Connection
 const redis = new Redis({
   config: {
     host: process.env.REDIS_HOST,

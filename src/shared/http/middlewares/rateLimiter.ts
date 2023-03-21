@@ -6,7 +6,7 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 const limiter = new RateLimiterRedis({
   storeClient: redis,
   keyPrefix: 'ratelimit',
-  points: 1,
+  points: 5,
   duration: 1,
 });
 
@@ -18,7 +18,7 @@ export default async function rateLimiter(
   try {
     await limiter.consume(req.ip);
 
-    await redis.set('IP_DO_RT', req.ip);
+    await redis.set('IP_DO_RT', req.ip); // armazena ips que batem no rt
 
     return next();
   } catch (err) {

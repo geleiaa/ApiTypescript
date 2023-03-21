@@ -18,11 +18,13 @@ class SendFogotPasswordEmailService {
 
     const { token } = await UsersTokenRepository.generate(user.id);
 
+    // template do email
     const forgotTemplate = path.resolve(
       __dirname,
       '../../../config/mail/views/forgot_pass.hbs',
     );
 
+    // https://ethereal.email/
     await SendEtherealMail.sendMail({
       to: {
         name: user.name,

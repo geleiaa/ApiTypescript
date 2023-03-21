@@ -25,6 +25,7 @@ class ResetPasswordEmailService {
 
     const tokenCreatedAt = userToken.created_at;
 
+    // verirfica a quanto tempo o token foi emitido, expira em 2 hrs
     const compareDate = addHours(tokenCreatedAt, 2);
 
     if (isAfter(Date.now(), compareDate)) {
