@@ -1,3 +1,4 @@
+import RedisCache from '@shared/cache/RedisCache';
 import AppError from '@shared/errors/AppError';
 import Product from '../entities/Product';
 import { ProdsRepository } from '../repositories/ProductRepost';
@@ -16,11 +17,15 @@ class ProductCreateService {
       throw new AppError('Esse produto ja existe!!!');
     }
 
-    const product = await ProdsRepository.create({
+    const redisCache = new RedisCache();
+
+    const product = ProdsRepository.create({
       name,
       price,
       quantity,
     });
+
+    await redisCache.invalidateCache('api-vendas-PRODUCT_LIST');
 
     await ProdsRepository.save(product);
 

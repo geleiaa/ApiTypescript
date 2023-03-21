@@ -1,5 +1,6 @@
 import Product from '../entities/Product';
 import { ProdsRepository } from '../repositories/ProductRepost';
+import RedisCache from '@shared/cache/RedisCache';
 
 // interface IPagenate {
 //   from: number;
@@ -15,7 +16,17 @@ import { ProdsRepository } from '../repositories/ProductRepost';
 
 class ProductListService {
   public async execute(): Promise<Product[]> {
-    const products = await ProdsRepository.find();
+    const redisCache = new RedisCache();
+
+    let products = await redisCache.recoverCache<Product[]>(
+      'api-vendas-PRODUCT_LIST',
+    );
+
+    if (!products) {
+      products = await ProdsRepository.find();
+
+      await redisCache.saveCache('api-vendas-PRODUCT_LIST', products);
+    }
 
     return products;
   }

@@ -18,4 +18,12 @@ services:
         ports:
         - "8080:8080"
         links:
-        - postgres:users    
+        - postgres:apivendas
+
+    redis:
+        restart: on-failure
+        image: redis:alpine3.17 
+        ports:
+        - "6379:6379"
+        environment:
+            REDIS_ARGS: "--requirepass geleiasenha"

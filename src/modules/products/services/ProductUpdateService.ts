@@ -1,3 +1,4 @@
+import RedisCache from '@shared/cache/RedisCache';
 import AppError from '@shared/errors/AppError';
 import Product from '../entities/Product';
 import { ProdsRepository } from '../repositories/ProductRepost';
@@ -31,6 +32,10 @@ class ProductUpdateService {
     if (prodexists && name != product.name) {
       throw new AppError('Esse produto ja existe!!!');
     }
+
+    const redisCache = new RedisCache();
+
+    await redisCache.invalidateCache('api-vendas-PRODUCT_LIST');
 
     product.name = name;
     product.price = price;

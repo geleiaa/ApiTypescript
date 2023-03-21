@@ -1,3 +1,4 @@
+import RedisCache from '@shared/cache/RedisCache';
 import AppError from '@shared/errors/AppError';
 import { ProdsRepository } from '../repositories/ProductRepost';
 
@@ -16,6 +17,10 @@ class ProductDeleteService {
     if (!product) {
       throw new AppError('Produto não encontrado!!!');
     }
+
+    const redisCache = new RedisCache();
+
+    await redisCache.invalidateCache('api-vendas-PRODUCT_LIST');
 
     await ProdsRepository.remove(product);
   }
