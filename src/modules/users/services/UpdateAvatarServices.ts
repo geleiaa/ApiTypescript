@@ -1,9 +1,7 @@
-import path from 'path';
-import fs from 'fs';
 import AppError from '@shared/errors/AppError';
 import User from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepost';
-import uploadConf from '@config/upload';
+import DiskStorageProvider from '@shared/providers/StorageProvider/DiskStorageProveder';
 
 interface IRequest {
   userId: string;
@@ -13,21 +11,19 @@ interface IRequest {
 class UpdateAvatarService {
   public async execute({ userId, avatarFile }: IRequest): Promise<User> {
     const user = await UsersRepository.findById(userId);
+    const storageProvider = new DiskStorageProvider();
 
     if (!user) {
       throw new AppError('Não achei o usuário!!!');
     }
 
     if (user.avatar) {
-      const avatarFilePath = path.join(uploadConf.directory, user.avatar);
-      const avatarExists = await fs.promises.stat(avatarFilePath);
-
-      if (avatarExists) {
-        await fs.promises.unlink(avatarFilePath);
-      }
+      await storageProvider.deleteFile(user.avatar);
     }
 
-    user.avatar = avatarFile;
+    const filename = await storageProvider.saveFile(avatarFile);
+
+    user.avatar = filename;
 
     await UsersRepository.save(user);
 

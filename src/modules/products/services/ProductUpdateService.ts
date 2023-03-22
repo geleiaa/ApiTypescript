@@ -33,9 +33,7 @@ class ProductUpdateService {
       throw new AppError('Esse produto ja existe!!!');
     }
 
-    const redisCache = new RedisCache();
-
-    await redisCache.invalidateCache('api-vendas-PRODUCT_LIST');
+    await RedisCache.invalidateCache('api-vendas-PRODUCT_LIST');
 
     product.name = name;
     product.price = price;

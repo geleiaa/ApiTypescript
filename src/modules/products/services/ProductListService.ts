@@ -16,16 +16,14 @@ import RedisCache from '@shared/cache/RedisCache';
 
 class ProductListService {
   public async execute(): Promise<Product[]> {
-    const redisCache = new RedisCache();
-
-    let products = await redisCache.recoverCache<Product[]>(
+    let products = await RedisCache.recoverCache<Product[]>(
       'api-vendas-PRODUCT_LIST',
     );
 
     if (!products) {
       products = await ProdsRepository.find();
 
-      await redisCache.saveCache('api-vendas-PRODUCT_LIST', products);
+      await RedisCache.saveCache('api-vendas-PRODUCT_LIST', products);
     }
 
     return products;

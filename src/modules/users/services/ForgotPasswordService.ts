@@ -3,6 +3,8 @@ import { UsersRepository } from '../repositories/UsersRepost';
 import { UsersTokenRepository } from '../repositories/UserTokensRepost';
 import { SendEtherealMail } from '@config/mail/EtherealMail';
 import path from 'path';
+import mailConf from '@config/mail/mail';
+import { SendOtherServiceMail } from '@config/mail/OtherEmailService';
 
 interface IRequest {
   email: string;
@@ -23,6 +25,24 @@ class SendFogotPasswordEmailService {
       __dirname,
       '../../../config/mail/views/forgot_pass.hbs',
     );
+
+    if (mailConf.driver === 'other email service') {
+      await SendOtherServiceMail.sendMail({
+        to: {
+          name: user.name,
+          email: user.email,
+        },
+        subject: 'Recuperação de Senha da Api',
+        templateData: {
+          file: forgotTemplate,
+          variables: {
+            name: user.name,
+            token,
+          },
+        },
+      });
+      return;
+    }
 
     // https://ethereal.email/
     await SendEtherealMail.sendMail({

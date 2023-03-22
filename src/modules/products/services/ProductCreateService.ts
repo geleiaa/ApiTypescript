@@ -17,15 +17,13 @@ class ProductCreateService {
       throw new AppError('Esse produto ja existe!!!');
     }
 
-    const redisCache = new RedisCache();
-
     const product = ProdsRepository.create({
       name,
       price,
       quantity,
     });
 
-    await redisCache.invalidateCache('api-vendas-PRODUCT_LIST');
+    await RedisCache.invalidateCache('api-vendas-PRODUCT_LIST');
 
     await ProdsRepository.save(product);
 
