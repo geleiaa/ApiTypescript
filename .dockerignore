@@ -1,0 +1,10 @@
+src/
+.eslint*
+.prettierrc
+babel.config.js
+docker-compose.yml
+notes.txt
+package-lock.json
+README.md
+startdev.sh
+tsconfig.json

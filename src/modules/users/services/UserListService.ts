@@ -1,5 +1,5 @@
-import User from '../entities/User';
-import { UsersRepository } from '../repositories/UsersRepost';
+import User from '../infra/entities/User';
+import { UsersRepository } from '../infra/repositories/UsersRepost';
 
 class UserListService {
   public async execute(): Promise<User[]> {

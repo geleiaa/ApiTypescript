@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
-import { UsersRepository } from '../repositories/UsersRepost';
-import { UsersTokenRepository } from '../repositories/UserTokensRepost';
+import { UsersRepository } from '../infra/repositories/UsersRepost';
+import { UsersTokenRepository } from '../infra/repositories/UserTokensRepost';
 import { SendEtherealMail } from '@config/mail/EtherealMail';
 import path from 'path';
 import mailConf from '@config/mail/mail';

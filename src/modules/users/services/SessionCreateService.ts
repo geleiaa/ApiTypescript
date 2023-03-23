@@ -1,8 +1,8 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign, Secret } from 'jsonwebtoken';
-import User from '../entities/User';
-import { UsersRepository } from '../repositories/UsersRepost';
+import User from '../infra/entities/User';
+import { UsersRepository } from '../infra/repositories/UsersRepost';
 import authConf from '@config/auth';
 
 interface IRequest {

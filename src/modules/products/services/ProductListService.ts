@@ -1,5 +1,5 @@
-import Product from '../entities/Product';
-import { ProdsRepository } from '../repositories/ProductRepost';
+import Product from '../infra/entities/Product';
+import { ProdsRepository } from '../infra/repositories/ProductRepost';
 import RedisCache from '@shared/cache/RedisCache';
 
 // interface IPagenate {

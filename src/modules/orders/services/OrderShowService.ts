@@ -1,5 +1,5 @@
-import Order from '../entities/Order';
-import { OrdersRepository } from '../repositories/OrdersRepost';
+import Order from '../infra/entities/Order';
+import { OrdersRepository } from '../infra/repositories/OrdersRepost';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

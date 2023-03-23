@@ -1,8 +1,8 @@
-import Order from '../entities/Order';
-import { OrdersRepository } from '../repositories/OrdersRepost';
-import { ProdsRepository } from '@modules/products/repositories/ProductRepost';
+import Order from '../infra/entities/Order';
+import { OrdersRepository } from '../infra/repositories/OrdersRepost';
+import { ProdsRepository } from '@modules/products/infra/repositories/ProductRepost';
 import AppError from '@shared/errors/AppError';
-import { UsersRepository } from '@modules/users/repositories/UsersRepost';
+import { UsersRepository } from '@modules/users/infra/repositories/UsersRepost';
 
 interface IProduct {
   id: string;

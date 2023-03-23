@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
-import Product from '../entities/Product';
-import { ProdsRepository } from '../repositories/ProductRepost';
+import Product from '../infra/entities/Product';
+import { ProdsRepository } from '../infra/repositories/ProductRepost';
 
 interface IRequest {
   id: string;
