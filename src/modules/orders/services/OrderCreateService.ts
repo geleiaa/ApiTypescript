@@ -1,8 +1,8 @@
-import Order from '../infra/entities/Order';
-import { OrdersRepository } from '../infra/repositories/OrdersRepost';
-import { ProdsRepository } from '@modules/products/infra/repositories/ProductRepost';
+import { IOrdersRepository } from '../domain/models/IOrdersRepository';
+import { IProdsRepository } from '@modules/products/domain/models/IProdsRepository';
+import { IUsersRepository } from '@modules/users/domain/models/IUsersRepository';
 import AppError from '@shared/errors/AppError';
-import { UsersRepository } from '@modules/users/infra/repositories/UsersRepost';
+import Order from '../infra/entities/Order';
 
 interface IProduct {
   id: string;
@@ -15,14 +15,20 @@ interface IRequest {
 }
 
 class OrderCreateService {
+  constructor(
+    private ordersRepo: IOrdersRepository,
+    private usersRepo: IUsersRepository,
+    private prodsRepo: IProdsRepository,
+  ) {}
+
   public async execute({ user_id, products }: IRequest): Promise<Order> {
-    const userExists = await UsersRepository.findById(user_id);
+    const userExists = await this.usersRepo.findById(user_id);
 
     if (!userExists) {
       throw new AppError('Esse Cliente não existe!!!');
     }
 
-    const prodsExists = await ProdsRepository.findAllById(products);
+    const prodsExists = await this.prodsRepo.findAllById(products);
 
     if (!prodsExists.length) {
       throw new AppError('Produtos não encontrados!');
@@ -58,7 +64,7 @@ class OrderCreateService {
       price: prodsExists.filter(p => p.id === product.id)[0].price,
     })); // a - 94
 
-    const order = await OrdersRepository.createOrder({
+    const order = await this.ordersRepo.createOrder({
       user: userExists,
       products: serializedProducts,
     });
@@ -72,7 +78,7 @@ class OrderCreateService {
         product.quantity,
     })); // a - 95
 
-    await ProdsRepository.save(updatedProductQuantity);
+    await this.prodsRepo.updateEstoque(updatedProductQuantity);
 
     return order;
   }

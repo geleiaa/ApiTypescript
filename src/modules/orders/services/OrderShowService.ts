@@ -1,14 +1,16 @@
 import Order from '../infra/entities/Order';
-import { OrdersRepository } from '../infra/repositories/OrdersRepost';
 import AppError from '@shared/errors/AppError';
+import { IOrdersRepository } from '../domain/models/IOrdersRepository';
 
 interface IRequest {
   id: string;
 }
 
 class OrderShowService {
-  public async execute({ id }: IRequest): Promise<Order> {
-    const order = await OrdersRepository.findById(id);
+  constructor(private ordersRepo: IOrdersRepository) {}
+
+  async execute({ id }: IRequest): Promise<Order> {
+    const order = await this.ordersRepo.findById(id);
 
     if (!order) {
       throw new AppError('Order não encontrada!!');
