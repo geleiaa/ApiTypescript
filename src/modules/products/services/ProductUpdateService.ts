@@ -1,7 +1,8 @@
 import RedisCache from '@shared/cache/RedisCache';
 import AppError from '@shared/errors/AppError';
-import Product from '../infra/entities/Product';
-import { ProdsRepository } from '../infra/repositories/ProductRepost';
+import { IProds } from '../domain/models/IProds';
+import { IProdsRepository } from '../domain/models/IProdsRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   id: string;
@@ -10,24 +11,26 @@ interface IRequest {
   quantity: number;
 }
 
+@injectable()
 class ProductUpdateService {
+  constructor(
+    @inject('ProdsRepository')
+    private prodsRepo: IProdsRepository,
+  ) {}
+
   public async execute({
     id,
     name,
     price,
     quantity,
-  }: IRequest): Promise<Product> {
-    const product = await ProdsRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  }: IRequest): Promise<IProds> {
+    const product = await this.prodsRepo.findById(id);
 
     if (!product) {
       throw new AppError('Produto não encontrado!!!');
     }
 
-    const prodexists = await ProdsRepository.findByName(name);
+    const prodexists = await this.prodsRepo.findByName(name);
 
     if (prodexists && name != product.name) {
       throw new AppError('Esse produto ja existe!!!');
@@ -39,7 +42,7 @@ class ProductUpdateService {
     product.price = price;
     product.quantity = quantity;
 
-    await ProdsRepository.save(product);
+    await this.prodsRepo.save(product);
 
     return product;
   }

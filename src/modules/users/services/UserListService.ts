@@ -1,9 +1,18 @@
-import User from '../infra/entities/User';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
+import { IUsers } from '../domain/models/IUsers';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 class UserListService {
-  public async execute(): Promise<User[]> {
-    const users = await UsersRepository.find();
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+  ) {}
+
+  public async execute(page: number, limit: number): Promise<IUsers[]> {
+    const skip = page;
+    const take = limit;
+    const users = await this.userRepo.findAll(skip, take);
 
     return users;
   }

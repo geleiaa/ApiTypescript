@@ -1,23 +1,32 @@
 import AppError from '@shared/errors/AppError';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
-import { UsersTokenRepository } from '../infra/repositories/UserTokensRepost';
 import { hash } from 'bcryptjs';
 import { isAfter, addHours } from 'date-fns';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
+import { inject, injectable } from 'tsyringe';
+import { IUserTokenRepository } from '../domain/models/IUserTokenRepository';
 
 interface IRequest {
   token: string;
   password: string;
 }
 
+@injectable()
 class ResetPasswordEmailService {
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+    @inject('UserTokenRepost')
+    private tokenRepo: IUserTokenRepository,
+  ) {}
+
   public async execute({ token, password }: IRequest): Promise<void> {
-    const userToken = await UsersTokenRepository.findByToken(token);
+    const userToken = await this.tokenRepo.findByToken(token);
 
     if (!userToken) {
       throw new AppError('Token não encontrado!!!');
     }
 
-    const user = await UsersRepository.findById(userToken.user_id);
+    const user = await this.userRepo.findById(userToken.user_id);
 
     if (!user) {
       throw new AppError('Usuário não encontrado!!!');
@@ -34,7 +43,7 @@ class ResetPasswordEmailService {
 
     user.password = await hash(password, 8);
 
-    await UsersRepository.save(user);
+    await this.userRepo.save(user);
   }
 }
 

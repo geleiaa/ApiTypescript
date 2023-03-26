@@ -1,24 +1,33 @@
 import AppError from '@shared/errors/AppError';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
-import { UsersTokenRepository } from '../infra/repositories/UserTokensRepost';
 import { SendEtherealMail } from '@config/mail/EtherealMail';
 import path from 'path';
 import mailConf from '@config/mail/mail';
 import { SendOtherServiceMail } from '@config/mail/OtherEmailService';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
+import { inject, injectable } from 'tsyringe';
+import { IUserTokenRepository } from '../domain/models/IUserTokenRepository';
 
 interface IRequest {
   email: string;
 }
 
+@injectable()
 class SendFogotPasswordEmailService {
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+    @inject('UserTokenRepost')
+    private tokenRepo: IUserTokenRepository,
+  ) {}
+
   public async execute({ email }: IRequest): Promise<void> {
-    const user = await UsersRepository.findByEmail(email);
+    const user = await this.userRepo.findByEmail(email);
 
     if (!user) {
       throw new AppError('Usuário não existe!!!');
     }
 
-    const { token } = await UsersTokenRepository.generate(user.id);
+    const { token } = await this.tokenRepo.generate(user.id);
 
     // template do email
     const forgotTemplate = path.resolve(

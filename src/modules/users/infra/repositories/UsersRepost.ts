@@ -1,3 +1,5 @@
+import { IUserCreate } from '@modules/users/domain/models/IUserCreate';
+import { IUsers } from '@modules/users/domain/models/IUsers';
 import { IUsersRepository } from '@modules/users/domain/models/IUsersRepository';
 import { dataSourceApp } from '@shared/infra/database';
 import { Repository } from 'typeorm';
@@ -9,6 +11,16 @@ class UsersRepository implements IUsersRepository {
 
   constructor() {
     this.ormRepo = dataSourceApp.getRepository(User);
+  }
+
+  async findAll(skip = 1, take = 10): Promise<IUsers[]> {
+    const prods = await this.ormRepo
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getMany();
+
+    return prods;
   }
 
   async findByName(name: string): Promise<User | null> {
@@ -38,6 +50,20 @@ class UsersRepository implements IUsersRepository {
         email,
       },
     });
+
+    return user;
+  }
+
+  async create({ name, email, password }: IUserCreate): Promise<User> {
+    const user = this.ormRepo.create({ name, email, password });
+
+    await this.ormRepo.save(user);
+
+    return user;
+  }
+
+  async save(user: User): Promise<User> {
+    await this.ormRepo.save(user);
 
     return user;
   }

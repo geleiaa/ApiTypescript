@@ -1,14 +1,15 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import AppError from '@shared/errors/AppError';
-import '@shared/infra/database';
-import routes from './routes';
 import { errors } from 'celebrate';
+import '@shared/infra/database';
+import '@shared/containerDI/index';
+import routes from './routes';
 import uploadConf from '@config/upload';
 import rateLimiter from './middlewares/rateLimiter';
+import express, { NextFunction, Request, Response } from 'express';
 //import { pagination } from 'typeorm-pagination';
 
 const app = express();

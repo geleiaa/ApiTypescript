@@ -1,12 +1,16 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import UserCreateService from '../../../services/UserCreateService';
 import UserListService from '../../../services/UserListService';
 
 export class UserController {
   public async list(req: Request, res: Response): Promise<Response> {
-    const listUsers = new UserListService();
+    const listUsers = container.resolve(UserListService);
 
-    const users = await listUsers.execute();
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    const users = await listUsers.execute(page, limit);
 
     return res.json({
       users: users,
@@ -16,7 +20,7 @@ export class UserController {
   public async create(req: Request, res: Response): Promise<Response> {
     const { name, email, password } = req.body;
 
-    const createOne = new UserCreateService();
+    const createOne = container.resolve(UserCreateService);
 
     const user = await createOne.execute({ name, email, password });
 

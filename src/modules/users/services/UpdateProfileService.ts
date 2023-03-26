@@ -1,7 +1,8 @@
-import User from '../infra/entities/User';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
 import AppError from '@shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
+import { IUsers } from '../domain/models/IUsers';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   user_id: string;
@@ -11,21 +12,26 @@ interface IRequest {
   old_pass: string;
 }
 
+@injectable()
 class UpdateProfileService {
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+  ) {}
   public async execute({
     user_id,
     name,
     email,
     password,
     old_pass,
-  }: IRequest): Promise<User> {
-    const user = await UsersRepository.findById(user_id);
+  }: IRequest): Promise<IUsers> {
+    const user = await this.userRepo.findById(user_id);
 
     if (!user) {
       throw new AppError('Usuário não encontrado!!');
     }
 
-    const userEmail = await UsersRepository.findByEmail(email);
+    const userEmail = await this.userRepo.findByEmail(email);
 
     if (userEmail && userEmail.id != user_id) {
       throw new AppError('Este email não pode ser usado!!');
@@ -48,7 +54,7 @@ class UpdateProfileService {
     user.name = name;
     user.email = email;
 
-    await UsersRepository.save(user);
+    await this.userRepo.save(user);
 
     return user;
   }

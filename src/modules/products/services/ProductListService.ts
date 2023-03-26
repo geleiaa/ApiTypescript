@@ -1,6 +1,7 @@
-import Product from '../infra/entities/Product';
-import { ProdsRepository } from '../infra/repositories/ProductRepost';
 import RedisCache from '@shared/cache/RedisCache';
+import { IProds } from '../domain/models/IProds';
+import { IProdsRepository } from '../domain/models/IProdsRepository';
+import { inject, injectable } from 'tsyringe';
 
 // interface IPagenate {
 //   from: number;
@@ -14,14 +15,22 @@ import RedisCache from '@shared/cache/RedisCache';
 //   data: Product[];
 // }
 
+@injectable()
 class ProductListService {
-  public async execute(): Promise<Product[]> {
-    let products = await RedisCache.recoverCache<Product[]>(
+  constructor(
+    @inject('ProdsRepository')
+    private prodsRepo: IProdsRepository,
+  ) {}
+
+  public async execute(page: number, limit: number): Promise<IProds[]> {
+    let products = await RedisCache.recoverCache<IProds[]>(
       'api-vendas-PRODUCT_LIST',
     );
 
     if (!products) {
-      products = await ProdsRepository.find();
+      const skip = page;
+      const take = limit;
+      products = await this.prodsRepo.findAll(skip, take);
 
       await RedisCache.saveCache('api-vendas-PRODUCT_LIST', products);
     }

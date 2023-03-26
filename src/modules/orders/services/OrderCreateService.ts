@@ -1,8 +1,9 @@
 import { IOrdersRepository } from '../domain/models/IOrdersRepository';
 import { IProdsRepository } from '@modules/products/domain/models/IProdsRepository';
 import { IUsersRepository } from '@modules/users/domain/models/IUsersRepository';
+import { IOrders } from '../domain/models/IOrders';
 import AppError from '@shared/errors/AppError';
-import Order from '../infra/entities/Order';
+import { inject, injectable } from 'tsyringe';
 
 interface IProduct {
   id: string;
@@ -14,14 +15,18 @@ interface IRequest {
   products: IProduct[];
 }
 
+@injectable() // classe injetavel
 class OrderCreateService {
   constructor(
+    @inject('OrdersRepository')
     private ordersRepo: IOrdersRepository,
+    @inject('UsersRepository')
     private usersRepo: IUsersRepository,
+    @inject('ProdsRepository')
     private prodsRepo: IProdsRepository,
   ) {}
 
-  public async execute({ user_id, products }: IRequest): Promise<Order> {
+  public async execute({ user_id, products }: IRequest): Promise<IOrders> {
     const userExists = await this.usersRepo.findById(user_id);
 
     if (!userExists) {

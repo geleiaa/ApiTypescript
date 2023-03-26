@@ -4,14 +4,18 @@ import ProductDeleteService from '../../../services/ProductDeleteSevice';
 import ProductListService from '../../../services/ProductListService';
 import ProductShowService from '../../../services/ProductShowService';
 import ProductUpdateService from '../../../services/ProductUpdateService';
+import { container } from 'tsyringe';
 
 export class ProductsController {
   public async list(req: Request, res: Response): Promise<Response> {
-    const listProd = new ProductListService();
+    const listProd = container.resolve(ProductListService);
 
-    const products = await listProd.execute();
+    const page = Number(req.params.page);
+    const limit = Number(req.params.limit);
 
-    return res.json({
+    const products = await listProd.execute(page, limit);
+
+    return res.status(200).json({
       data: products,
     });
   }
@@ -19,7 +23,7 @@ export class ProductsController {
   public async show(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
-    const showOne = new ProductShowService();
+    const showOne = container.resolve(ProductShowService);
 
     const product = await showOne.execute({ id });
 
@@ -31,7 +35,7 @@ export class ProductsController {
   public async create(req: Request, res: Response): Promise<Response> {
     const { name, price, quantity } = req.body;
 
-    const createOne = new ProductCreateService();
+    const createOne = container.resolve(ProductCreateService);
 
     const product = await createOne.execute({ name, price, quantity });
 
@@ -45,7 +49,7 @@ export class ProductsController {
     const { name, price, quantity } = req.body;
     const { id } = req.params;
 
-    const updateOne = new ProductUpdateService();
+    const updateOne = container.resolve(ProductUpdateService);
 
     const product = await updateOne.execute({ id, name, price, quantity });
 
@@ -58,7 +62,7 @@ export class ProductsController {
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
-    const deleteOne = new ProductDeleteService();
+    const deleteOne = container.resolve(ProductDeleteService);
 
     await deleteOne.execute({ id });
 

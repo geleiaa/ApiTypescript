@@ -1,9 +1,10 @@
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign, Secret } from 'jsonwebtoken';
-import User from '../infra/entities/User';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
 import authConf from '@config/auth';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
+import { IUsers } from '../domain/models/IUsers';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   email: string;
@@ -11,13 +12,19 @@ interface IRequest {
 }
 
 interface IResponse {
-  user: User;
+  user: IUsers;
   token: string;
 }
 
+@injectable()
 class SessionCreateService {
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+  ) {}
+
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const user = await UsersRepository.findByEmail(email);
+    const user = await this.userRepo.findByEmail(email);
 
     if (!user) {
       throw new AppError('Email ou Senha incorreto!!!', 401);

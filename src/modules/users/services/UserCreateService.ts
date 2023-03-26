@@ -1,7 +1,8 @@
 import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
-import User from '../infra/entities/User';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
+import { IUsers } from '../domain/models/IUsers';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   name: string;
@@ -9,9 +10,15 @@ interface IRequest {
   password: string;
 }
 
+@injectable()
 class UserCreateService {
-  public async execute({ name, email, password }: IRequest): Promise<User> {
-    const emailexists = await UsersRepository.findByEmail(email);
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+  ) {}
+
+  public async execute({ name, email, password }: IRequest): Promise<IUsers> {
+    const emailexists = await this.userRepo.findByEmail(email);
 
     if (emailexists) {
       throw new AppError('Esse email ja está cadastrado!!');
@@ -19,13 +26,11 @@ class UserCreateService {
 
     const hashedPass = await hash(password, 10); // hasheia a senha
 
-    const user = UsersRepository.create({
+    const user = this.userRepo.create({
       name,
       email,
       password: hashedPass,
     });
-
-    await UsersRepository.save(user);
 
     return user;
   }

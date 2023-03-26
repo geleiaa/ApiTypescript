@@ -14,7 +14,7 @@ echo "\n Up docker containers \n"
 sudo docker compose up -d
 
 echo "\n Runing migrations \n"
-npm run typeorm migration:run -- -d ./src/shared/database/index.ts
+npm run typeorm migration:run -- -d ./src/shared/infra/database/index.ts
 
 echo "\n Start Server \n"
 npm run dev

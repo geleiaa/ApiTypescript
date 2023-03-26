@@ -1,16 +1,22 @@
 import AppError from '@shared/errors/AppError';
-import User from '../infra/entities/User';
-import { UsersRepository } from '../infra/repositories/UsersRepost';
 import DiskStorageProvider from '@shared/providers/StorageProvider/DiskStorageProveder';
+import { inject, injectable } from 'tsyringe';
+import { IUsers } from '../domain/models/IUsers';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
 
 interface IRequest {
   userId: string;
   avatarFile: string;
 }
 
+@injectable()
 class UpdateAvatarService {
-  public async execute({ userId, avatarFile }: IRequest): Promise<User> {
-    const user = await UsersRepository.findById(userId);
+  constructor(
+    @inject('UsersRepository')
+    private userRepo: IUsersRepository,
+  ) {}
+  public async execute({ userId, avatarFile }: IRequest): Promise<IUsers> {
+    const user = await this.userRepo.findById(userId);
     const storageProvider = new DiskStorageProvider();
 
     if (!user) {
@@ -25,7 +31,7 @@ class UpdateAvatarService {
 
     user.avatar = filename;
 
-    await UsersRepository.save(user);
+    await this.userRepo.save(user);
 
     return user;
   }

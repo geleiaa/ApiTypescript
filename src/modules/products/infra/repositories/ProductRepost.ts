@@ -1,5 +1,7 @@
+import { IProds } from '@modules/products/domain/models/IProds';
 import { IProdsRepository } from '@modules/products/domain/models/IProdsRepository';
 import { IUpdateEstoque } from '@modules/products/domain/models/IUpdateEstoque';
+import { IProdsCreate } from '@modules/products/domain/models/IProdsCreate';
 import { dataSourceApp } from '@shared/infra/database';
 import { In, Repository } from 'typeorm';
 import Product from '../entities/Product';
@@ -14,6 +16,26 @@ class ProdsRepository implements IProdsRepository {
 
   constructor() {
     this.ormRepo = dataSourceApp.getRepository(Product);
+  }
+
+  async findAll(skip = 1, take = 10): Promise<IProds[]> {
+    const prods = await this.ormRepo
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getMany();
+
+    return prods;
+  }
+
+  async findById(id: string): Promise<IProds | null> {
+    const prod = await this.ormRepo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return prod;
   }
 
   async findByName(name: string): Promise<Product | null> {
@@ -40,6 +62,24 @@ class ProdsRepository implements IProdsRepository {
 
   async updateEstoque(product: IUpdateEstoque[]): Promise<void> {
     await this.ormRepo.save(product);
+  }
+
+  async create({ name, price, quantity }: IProdsCreate): Promise<Product> {
+    const prod = this.ormRepo.create({ name, price, quantity });
+
+    await this.ormRepo.save(prod);
+
+    return prod;
+  }
+
+  async save(product: IProds): Promise<Product> {
+    await this.ormRepo.save(product);
+
+    return product;
+  }
+
+  async remove(product: IProds): Promise<void> {
+    await this.ormRepo.remove(product);
   }
 }
 
