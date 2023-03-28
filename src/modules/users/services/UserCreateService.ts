@@ -26,7 +26,7 @@ class UserCreateService {
 
     const hashedPass = await hash(password, 10); // hasheia a senha
 
-    const user = this.userRepo.create({
+    const user = await this.userRepo.create({
       name,
       email,
       password: hashedPass,

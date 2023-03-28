@@ -109,9 +109,9 @@
   },
   "exclude": [
     "node_modules",
-    "build"
+    "build",
+    "tests"
   ],
   "include": [
-    "src/**/*"
-  ]
+    "src/**/*" ]
 }

@@ -12,7 +12,7 @@ export class UserController {
 
     const users = await listUsers.execute(page, limit);
 
-    return res.json({
+    return res.status(200).json({
       users: users,
     });
   }
@@ -24,7 +24,7 @@ export class UserController {
 
     const user = await createOne.execute({ name, email, password });
 
-    return res.json({
+    return res.status(201).json({
       message: 'usuário criado!!',
       user: user,
     });
