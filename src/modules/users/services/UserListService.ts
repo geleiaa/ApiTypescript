@@ -1,6 +1,6 @@
-import { IUsersRepository } from '../domain/models/IUsersRepository';
-import { IUsers } from '../domain/models/IUsers';
 import { inject, injectable } from 'tsyringe';
+import { IPagination } from '../domain/models/IPagination';
+import { IUsersRepository } from '../domain/models/IUsersRepository';
 
 @injectable()
 class UserListService {
@@ -9,10 +9,10 @@ class UserListService {
     private userRepo: IUsersRepository,
   ) {}
 
-  public async execute(page: number, limit: number): Promise<IUsers[]> {
-    const skip = page;
+  public async execute(page: number, limit: number): Promise<IPagination> {
     const take = limit;
-    const users = await this.userRepo.findAll(skip, take);
+    const skip = (Number(page) - 1) * take;
+    const users = await this.userRepo.findAll(page, skip, take);
 
     return users;
   }

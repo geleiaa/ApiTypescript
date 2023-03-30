@@ -34,7 +34,7 @@ class ProdsRepository implements IProdsRepository {
       per_page: take,
       total: count,
       current_page: page,
-      data: prods,
+      products: prods,
     };
 
     return result;

@@ -10,8 +10,8 @@ export class ProductsController {
   public async list(req: Request, res: Response): Promise<Response> {
     const listProd = container.resolve(ProductListService);
 
-    const page = Number(req.params.page);
-    const limit = Number(req.params.limit);
+    const page = req.params.page ? Number(req.params.page) : 1;
+    const limit = req.params.limit ? Number(req.params.limit) : 10;
 
     const products = await listProd.execute(page, limit);
 

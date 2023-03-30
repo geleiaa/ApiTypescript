@@ -1,5 +1,4 @@
 import RedisCache from '@shared/cache/RedisCache';
-import { IProds } from '../domain/models/IProds';
 import { IProdsRepository } from '../domain/models/IProdsRepository';
 import { inject, injectable } from 'tsyringe';
 import { IPagination } from '../domain/models/IPagination';
@@ -26,8 +25,8 @@ class ProductListService {
   public async execute(
     page: number,
     limit: number,
-  ): Promise<IPagination[] | null> {
-    const products = await RedisCache.recoverCache<IPagination[]>(
+  ): Promise<IPagination | null> {
+    const products = await RedisCache.recoverCache<IPagination>(
       'api-vendas-PRODUCT_LIST',
     );
 

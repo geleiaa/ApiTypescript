@@ -1,8 +1,9 @@
+import { IPagination } from './IPagination';
 import { IUserCreate } from './IUserCreate';
 import { IUsers } from './IUsers';
 
 export interface IUsersRepository {
-  findAll(skip: number, take: number): Promise<IUsers[]>;
+  findAll(page: number, skip: number, take: number): Promise<IPagination>;
   findByName(name: string): Promise<IUsers | null>;
   findById(id: string): Promise<IUsers | null>;
   findByEmail(email: string): Promise<IUsers | null>;

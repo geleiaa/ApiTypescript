@@ -1,5 +1,5 @@
+import { IPagination } from '@modules/users/domain/models/IPagination';
 import { IUserCreate } from '@modules/users/domain/models/IUserCreate';
-import { IUsers } from '@modules/users/domain/models/IUsers';
 import { IUsersRepository } from '@modules/users/domain/models/IUsersRepository';
 import { dataSourceApp } from '@shared/infra/database';
 import { Repository } from 'typeorm';
@@ -13,14 +13,25 @@ class UsersRepository implements IUsersRepository {
     this.ormRepo = dataSourceApp.getRepository(User);
   }
 
-  async findAll(skip = 1, take = 10): Promise<IUsers[]> {
-    const prods = await this.ormRepo
+  async findAll(
+    page: number,
+    skip: number,
+    take: number,
+  ): Promise<IPagination> {
+    const [users, count] = await this.ormRepo
       .createQueryBuilder()
       .skip(skip)
       .take(take)
-      .getMany();
+      .getManyAndCount();
 
-    return prods;
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      users: users,
+    };
+
+    return result;
   }
 
   async findByName(name: string): Promise<User | null> {
