@@ -2,6 +2,7 @@ import RedisCache from '@shared/cache/RedisCache';
 import { IProds } from '../domain/models/IProds';
 import { IProdsRepository } from '../domain/models/IProdsRepository';
 import { inject, injectable } from 'tsyringe';
+import { IPagination } from '../domain/models/IPagination';
 
 // interface IPagenate {
 //   from: number;
@@ -22,15 +23,18 @@ class ProductListService {
     private prodsRepo: IProdsRepository,
   ) {}
 
-  public async execute(page: number, limit: number): Promise<IProds[]> {
-    let products = await RedisCache.recoverCache<IProds[]>(
+  public async execute(
+    page: number,
+    limit: number,
+  ): Promise<IPagination[] | null> {
+    const products = await RedisCache.recoverCache<IPagination[]>(
       'api-vendas-PRODUCT_LIST',
     );
 
     if (!products) {
-      const skip = page;
       const take = limit;
-      products = await this.prodsRepo.findAll(skip, take);
+      const skip = (Number(page) - 1) * take;
+      const products = await this.prodsRepo.findAll(page, skip, take);
 
       await RedisCache.saveCache('api-vendas-PRODUCT_LIST', products);
     }

@@ -34,7 +34,7 @@ prodsRouter.put(
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
-      price: Joi.number().precision(2).required(),
+      price: Joi.number().precision(2),
       quantity: Joi.number().required(),
     },
     [Segments.PARAMS]: {

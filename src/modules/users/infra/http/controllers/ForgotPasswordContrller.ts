@@ -13,7 +13,7 @@ export class ForgotPasswordController {
     });
 
     return res.status(200).json({
-      messge: 'Email Enviado',
+      message: 'Email Enviado',
     });
   }
 }

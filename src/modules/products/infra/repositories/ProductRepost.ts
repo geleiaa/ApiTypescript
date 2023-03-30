@@ -5,6 +5,7 @@ import { IProdsCreate } from '@modules/products/domain/models/IProdsCreate';
 import { dataSourceApp } from '@shared/infra/database';
 import { In, Repository } from 'typeorm';
 import Product from '../entities/Product';
+import { IPagination } from '@modules/products/domain/models/IPagination';
 
 interface IFindProds {
   id: string;
@@ -18,14 +19,25 @@ class ProdsRepository implements IProdsRepository {
     this.ormRepo = dataSourceApp.getRepository(Product);
   }
 
-  async findAll(skip = 1, take = 10): Promise<IProds[]> {
-    const prods = await this.ormRepo
+  async findAll(
+    page: number,
+    skip: number,
+    take: number,
+  ): Promise<IPagination> {
+    const [prods, count] = await this.ormRepo
       .createQueryBuilder()
       .skip(skip)
       .take(take)
-      .getMany();
+      .getManyAndCount();
 
-    return prods;
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      data: prods,
+    };
+
+    return result;
   }
 
   async findById(id: string): Promise<IProds | null> {
