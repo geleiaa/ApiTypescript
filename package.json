@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
-    "prod": "node ./build/shared/http/server.js",
+    "prod": "node ./build/shared/infra/http/server.js",
     "biudi": "babel src --extensions \".js,.ts\" --out-dir build --copy-files",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",

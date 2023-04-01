@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 node_modules/
+.docker/
 build/
 temp/
 tests-reports/
@@ -10,5 +11,5 @@ ormconfig.json
 dist
 package-lock.json
 notes.txt
-uploads/*
+uploads/
 !uploads/.gitkeep
