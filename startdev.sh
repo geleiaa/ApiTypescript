@@ -17,4 +17,4 @@ echo "\n Runing migrations \n"
 npm run typeorm migration:run -- -d ./src/shared/infra/database/index.ts
 
 echo "\n Start Server \n"
-npm run prod
+npm run dev

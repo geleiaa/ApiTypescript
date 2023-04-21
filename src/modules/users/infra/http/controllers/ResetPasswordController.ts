@@ -13,8 +13,6 @@ export class ResetPasswordController {
       password,
     });
 
-    console.log('Reseted Pass');
-
     return res.status(200).json({
       message: 'Senha Atualizada!!',
     });

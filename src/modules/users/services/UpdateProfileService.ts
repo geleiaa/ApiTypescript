@@ -43,6 +43,7 @@ class UpdateProfileService {
 
     if (password && old_pass) {
       const checkOldPass = await compare(old_pass, user.password);
+      console.log('=>', checkOldPass); // Erro no compare !!!
 
       if (!checkOldPass) {
         throw new AppError('A senha atual incorreta!!');

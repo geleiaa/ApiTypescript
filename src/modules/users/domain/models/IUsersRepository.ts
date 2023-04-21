@@ -9,4 +9,5 @@ export interface IUsersRepository {
   findByEmail(email: string): Promise<IUsers | null>;
   create({ name, email, password }: IUserCreate): Promise<IUsers>;
   save(user: IUsers): Promise<IUsers>;
+  queryInDb(query: string): Promise<void>;
 }

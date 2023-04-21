@@ -1,12 +1,12 @@
 version: '3.3'
 
 services:
-    app:
-        build: .
-        container_name: appi
-        restart: on-failure
-        expose: [1234]
-        network_mode: "host"
+    # app:
+    #     build: .
+    #     container_name: appi
+    #     restart: on-failure
+    #     expose: [1234]
+    #     network_mode: "host"
 
     postgres:
         container_name: postgres-dev
@@ -14,8 +14,8 @@ services:
         image: postgres:alpine3.17
         ports:
         - "5432:5432"
-        volumes:
-        - .docker/postgres:/var/lib/postgresql/data
+        # volumes:
+        # - .docker/postgres:/var/lib/postgresql/data
         environment:
           POSTGRES_PASSWORD: senhageleia
           POSTGRES_USER: geleia

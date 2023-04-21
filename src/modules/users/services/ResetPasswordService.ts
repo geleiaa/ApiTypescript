@@ -4,6 +4,7 @@ import { isAfter, addHours } from 'date-fns';
 import { IUsersRepository } from '../domain/models/IUsersRepository';
 import { inject, injectable } from 'tsyringe';
 import { IUserTokenRepository } from '../domain/models/IUserTokenRepository';
+import { IUsers } from '../domain/models/IUsers';
 
 interface IRequest {
   token: string;
@@ -19,7 +20,7 @@ class ResetPasswordEmailService {
     private tokenRepo: IUserTokenRepository,
   ) {}
 
-  public async execute({ token, password }: IRequest): Promise<void> {
+  public async execute({ token, password }: IRequest): Promise<IUsers> {
     const userToken = await this.tokenRepo.findByToken(token);
 
     if (!userToken) {
@@ -44,6 +45,8 @@ class ResetPasswordEmailService {
     user.password = await hash(password, 8);
 
     await this.userRepo.save(user);
+
+    return user;
   }
 }
 

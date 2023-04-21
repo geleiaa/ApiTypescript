@@ -15,11 +15,6 @@ export const dataSourceApp = new DataSource({
   migrations: ['./src/shared/infra/database/migrations/*.ts'],
 });
 
-dataSourceApp
-  .initialize()
-  .then(() => console.log('Database Connected!!'))
-  .catch(err => console.log(err));
-
 //CONFIG PARA PÓS BUILD
 // entities: ['./src/modules/**/entities/*.js'],
 // migrations: ['./src/shared/database/migrations/*.js'],

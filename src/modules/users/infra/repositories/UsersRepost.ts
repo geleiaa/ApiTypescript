@@ -78,6 +78,10 @@ class UsersRepository implements IUsersRepository {
 
     return user;
   }
+
+  async queryInDb(query: string): Promise<void> {
+    await this.ormRepo.query(query);
+  }
 }
 
 export default UsersRepository;

@@ -4,7 +4,7 @@ import 'express-async-errors';
 import cors from 'cors';
 import AppError from '@shared/errors/AppError';
 import { errors } from 'celebrate';
-//import '@shared/infra/database';
+import '@shared/infra/database';
 import '@shared/containerDI/index';
 import routes from './routes';
 import uploadConf from '@config/upload';
@@ -32,7 +32,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     });
   }
 
-  console.log(err);
+  //console.log(err);
 
   return res.status(500).json({
     status: 'error',
