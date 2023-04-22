@@ -5,6 +5,7 @@ node_modules/
 build/
 temp/
 tests-reports/
+maisoumenosprod.sh
 .env
 coverage
 ormconfig.json

@@ -11,6 +11,8 @@ import uploadConf from '@config/upload';
 import rateLimiter from './middlewares/rateLimiter';
 import express, { NextFunction, Request, Response } from 'express';
 //import { pagination } from 'typeorm-pagination';
+import swaggerUi from 'swagger-ui-express';
+import apiFile from  './swagger.json';
 
 const app = express();
 
@@ -23,6 +25,8 @@ app.use(routes);
 //app.use(pagination);
 
 app.use(errors()); // 'celebrate' validation errors
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiFile));
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof AppError) {

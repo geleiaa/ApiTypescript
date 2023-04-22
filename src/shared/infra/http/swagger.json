@@ -1,0 +1,587 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "version": "1.3.0",
+        "title": "API vendas TS",
+        "description": "api de ecommerce",
+        "termsOfService": "http://api_url/terms/"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/",
+            "description": "Local server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "users",
+            "description": "rotas de usuários"
+        },
+        {
+            "name": "products",
+            "description": "rotas de produtos"
+        },
+        {
+            "name": "orders",
+            "description": "rota de pedidos"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "users"
+                ],    
+                "description": "Criar um novo usuário",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserCreatedResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/session": {
+            "post": {
+                "tags": [
+                    "users"
+                ],    
+                "description": "Login do usuários",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserAuth"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário logado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthenticatedUserResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Mostra o perfil do usuário, nessecita de uma token",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "schema": {
+                            "$ref": "#/components/schemas/jwtToken"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Perfil do usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfileResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Altera os dados do perfil do usuário",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserProfileUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "perfil atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfileResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/password/forgot": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "description": "envia uma email para atualizar a senha, forgot password",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/email"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "email enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/password/reset": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "description": "altera a senha do usuário com o token recebido no emailde forgot password",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserResetPassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "senha atualizada",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "description": "lista todos os produtos",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "pagination",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "pagination",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "lista de produtos de acordo com a paginação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "products"
+                ],
+                "description": "cria um produto",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateProduct"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "produto criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/:id": {
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "description": "lista um pordutode acordo com o id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "post": {
+                "tags": [
+                    "orders"
+                ],
+                "description": "cria um pedido de produto(s)",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOrder"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "pedido criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/:id": {
+            "get": {
+                "tags": [
+                    "orders"
+                ],
+                "description": "lista um pedido de acordo com o id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "pedido criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "id": {
+                "type": "string",
+                "example": "5e8131eba7768d9e4f06c884"
+            },
+            "name": {
+                "type": "string",
+                "example": "John Doe"
+            },
+            "email": {
+                "type": "string",
+                "example": "john@mail.com"
+            },
+            "password": {
+                "type": "string",
+                "example": "12345#@$$%"
+            },
+            "forgotPassToken": {
+                "type": "string",
+                "example": "5e8131eba7768d9e4f06c884"
+            },
+            "jwtToken": {
+                "type": "string",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdmZTQ0YzQzYWQwYjAwMThmOGQ5ZmQiLCJuYW1lIjoiV2FsZGVtYXIgTmV0byIsImVtYWlsIjoid2FsZGVtYXJudEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRsUlZjWkc5d0dIVWJXcHF2TnJNR0F1SnNoWWJTR1RLSElQL3NycDlmTlkzZENFZDBJQjN6TyIsImlhdCI6MTU4NTQ0MDUxNywiZXhwIjoxNTg1NDYwNTE3fQ.JNtzLgCKGTAU9_-QjYUNxtM7X4nMU_pPIsNXDsEM-vP"
+            },
+            "price": {
+                "type": "number",
+                "example": "1.99"
+            },
+            "quantity": {
+                "type": "number",
+                "example": "10"
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "$ref": "#/components/schemas/name"
+                    },
+                    "email": {
+                        "$ref": "#/components/schemas/email"
+                    },
+                    "password": {
+                        "$ref": "#/components/schemas/password"
+                    }
+                }
+            },
+            "UserCreatedResponse": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "$ref": "#/components/schemas/name"
+                            },
+                            "email": {
+                                "$ref": "#/components/schemas/email"
+                            },
+                            "password": {
+                                "$ref": "#/components/schemas/password"
+                            },
+                            "id": {
+                                "$ref": "#/components/schemas/id"
+                            }
+                        }
+                    }
+                }
+            },
+            "UserAuth": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "$ref": "#/components/schemas/email"
+                    },
+                    "password": {
+                        "$ref": "#/components/schemas/password"
+                    }
+                }
+            },
+            "AuthenticatedUserResponse": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "$ref": "#/components/schemas/name"
+                            },
+                            "email": {
+                                "$ref": "#/components/schemas/email"
+                            },
+                            "password": {
+                                "$ref": "#/components/schemas/password"
+                            },
+                            "id": {
+                                "$ref": "#/components/schemas/id"
+                            },
+                            "token": {
+                                "$ref": "#/components/schemas/jwtToken"
+                            }
+                        }
+                    }
+                }
+            },
+            "UserProfileResponse": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "$ref": "#/components/schemas/name"
+                            },
+                            "email": {
+                                "$ref": "#/components/schemas/email"
+                            },
+                            "password": {
+                                "$ref": "#/components/schemas/password"
+                            },
+                            "id": {
+                                "$ref": "#/components/schemas/id"
+                            }
+                        }
+                    }
+                }
+            },
+            "UserProfileUpdate": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "$ref": "#/components/schemas/name"
+                            },
+                            "email": {
+                                "$ref": "#/components/schemas/email"
+                            },
+                            "old_password": {
+                                "$ref": "#/components/schemas/password"
+                            },
+                            "new_password": {
+                                "$ref": "#/components/schemas/password"
+                            },
+                            "password_confirm": {
+                                "$ref": "#/components/schemas/password"
+                            }
+                        }
+                    }
+                }
+            },
+            "UserResetPassword": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "$ref": "#/components/schemas/forgotPassToken"
+                    },
+                    "new_password": {
+                        "$ref": "#/components/schemas/password"
+                    },
+                    "password_confirm": {
+                        "$ref": "#/components/schemas/password"
+                    }
+                }
+            },
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/id"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/name"
+                    },
+                    "price": {
+                        "$ref": "#/components/schemas/price"
+                    },
+                    "quantity": {
+                        "$ref": "#/components/schemas/quantity"
+                    }
+                }
+            },
+            "CreateProduct": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "$ref": "#/components/schemas/name"
+                    },
+                    "price": {
+                        "$ref": "#/components/schemas/price"
+                    },
+                    "quantity": {
+                        "$ref": "#/components/schemas/quantity"
+                    }
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/id"
+                    },
+                    "user_id": {
+                        "$ref": "#/components/schemas/id"
+                    },
+                    "products": {
+                        "type": "array",
+                        "$ref": "#/components/schemas/Product"
+                    }
+                }
+            },
+            "CreateOrder": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "$ref": "#/components/schemas/id"
+                    },
+                    "products": {
+                        "type": "array",
+                        "$ref": "#/components/schemas/Product"
+                    }
+                }
+            }
+        }
+    }
+}
