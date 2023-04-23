@@ -1,4 +1,5 @@
 import OrdersProducts from '@modules/orders/infra/entities/OrdersProducts';
+import { IProds } from '@modules/products/domain/models/IProds';
 import {
   Column,
   CreateDateColumn,
@@ -9,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity('products')
-class Product {
+class Product implements IProds {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

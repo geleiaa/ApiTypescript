@@ -1,3 +1,4 @@
+import { IToken } from '@modules/users/domain/models/IToken';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity('user_tokens')
-class UserToken {
+class UserToken implements IToken {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
