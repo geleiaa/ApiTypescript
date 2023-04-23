@@ -13,7 +13,8 @@ se quiser ver a documentação com mais detalhes, importe o arquivo swagger.json
 
 #### A aplicação segue 3 princípios do SOLID que ajudaram a manter o código bem dividido e fácil de ler. Os princípios seguidos são: 
 
-* **Single-responsibility** --> esse princípio é o mais presente na aplicação, com a divisão de responsabilidade nos arquivos dos **Controllers**, **Services** e **Rotas**. Cada arquivo e sua implementação tem funções bem definidas e isoladas, que dependem apenas de uma abstração das classes de **Repository**. Você pode ver um exemplo no diretório de services de usuários, com cada arquivo tendo um responsabilidade diferente: 
+* **Single-responsibility** --> esse princípio é o mais presente na aplicação, com a divisão de responsabilidade nos arquivos dos **Controllers**, **Services** e **Rotas**. Cada arquivo e sua implementação tem funções bem definidas e isoladas, que dependem apenas de uma abstração das classes de **Repository**. Você pode ver um exemplo no diretório de services de usuários, com cada arquivo tendo um responsabilidade diferente:
+
 ![solid1](https://github.com/geleiaa/ApiTypescript/blob/main/images/users_services.png)
 
 
@@ -21,18 +22,30 @@ se quiser ver a documentação com mais detalhes, importe o arquivo swagger.json
 
 1. As *Interfaces* padronizam os tipos e os dados que devem ser usados nas *Entities*, como no exemplo a seguir:
 
-Typeorm Entity ![solid2](https://github.com/geleiaa/ApiTypescript/blob/main/images/entity.png) Interface ![solid3](https://github.com/geleiaa/ApiTypescript/blob/main/images/usrInterface.png)
-e também padroniza os métodos usados nos *Repositories*
+Typeorm Entity:
+
+![solid2](https://github.com/geleiaa/ApiTypescript/blob/main/images/entity.png) 
+
+Interface:
+
+![solid3](https://github.com/geleiaa/ApiTypescript/blob/main/images/usrInterface.png)
+
 
 2. E os *Repositories* tem os seus métodos padronizados pelas *Intefaces* como nesse exemplo: 
 
-Typeorm Repository ![solid2](https://github.com/geleiaa/ApiTypescript/blob/main/images/repository.png) Interface ![solid3](https://github.com/geleiaa/ApiTypescript/blob/main/images/repoInterface.png)
+Typeorm Repository:
+
+![solid2](https://github.com/geleiaa/ApiTypescript/blob/main/images/repository.png) 
+
+Interface:
+
+![solid3](https://github.com/geleiaa/ApiTypescript/blob/main/images/repoInterface.png)
 
 
 
 * **Dependency-inversion** -> para finalizar, esse princípio tem ligação com DDD, foi usado nos **Serivces**, nos **Repositories** e nas **Entities** para abstrair o máximo possível e evitar a dependência do Typeorm ou de qualquer ORM. Para exemplifcar deixo um Service de usuários, você pode ver que ele recebe interfaces como tipo e como dependência:
 
-```typecript
+```ts
 import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
 import { IUsers } from '../domain/models/IUsers';
