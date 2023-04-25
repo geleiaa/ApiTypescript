@@ -114,3 +114,8 @@ class UserCreateService {
 
 #### Dev Notes: 
 1. refact pagination
+2. tsyringe dependency injection error
+`Unable to resolve signature of parameter decorator when called as an expression.
+  Argument of type 'undefined' is not assignable to parameter of type 'string | symbol'.ts(1239)`
+
+3. rodar o arquivo sql no banco depois de subir

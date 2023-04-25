@@ -17,9 +17,9 @@ services:
         # volumes:
         # - .docker/postgres:/var/lib/postgresql/data
         environment:
-          POSTGRES_PASSWORD: senhageleia
-          POSTGRES_USER: geleia
-          POSTGRES_DB: apivendas
+          POSTGRES_PASSWORD: ${DB_PASS}
+          POSTGRES_USER: ${DB_USER}
+          POSTGRES_DB: ${DB_NAME}
 
     adminer:
         container_name: adminer-dev
@@ -37,4 +37,4 @@ services:
         ports:
         - "6379:6379"
         environment:
-            REDIS_ARGS: "--requirepass geleiasenha" 
+            REDIS_ARGS: "--requirepass ${REDIS_PASS}" 
