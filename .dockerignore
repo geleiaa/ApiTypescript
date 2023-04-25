@@ -1,5 +1,6 @@
 src/
 tests/
+images/
 tests-reports/
 jest.config.ts
 node_modules/
@@ -18,3 +19,4 @@ startdev.sh
 maisoumenosprod.sh
 tsconfig.json
 README.md
+apivendas.sql

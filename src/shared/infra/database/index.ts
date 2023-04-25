@@ -1,5 +1,11 @@
+import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import 'dotenv/config';
+import User from '@modules/users/infra/entities/User';
+import Product from '@modules/products/infra/entities/Product';
+import Order from '@modules/orders/infra/entities/Order';
+import UserToken from '@modules/users/infra/entities/Token';
+import OrdersProducts from '@modules/orders/infra/entities/OrdersProducts';
 
 // Database Connection
 export const dataSourceApp = new DataSource({
@@ -11,7 +17,7 @@ export const dataSourceApp = new DataSource({
   database: process.env.DB_NAME,
   synchronize: false,
   logging: true,
-  entities: ['./src/modules/**/infra/entities/*.ts'],
+  entities: [User, UserToken , Product, Order, OrdersProducts],
   migrations: ['./src/shared/infra/database/migrations/*.ts'],
 });
 

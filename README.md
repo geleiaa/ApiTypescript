@@ -102,4 +102,15 @@ class UserCreateService {
 ![domain](https://github.com/geleiaa/ApiTypescript/blob/main/images/camada_domain.png)
 
 
-Dev Notes: docker e datasource para prod ...
+#### Rodar localmente com docker-compose:
+
+1. `docker compose up` 
+- primeiro faz o build da image da app, depois sobe os containers de banco, cache e uma GUI para gerenciar o banco.
+
+2. `docker compose down`
+- mata todos os containers
+
+3. ...
+
+#### Dev Notes: 
+1. refact pagination
